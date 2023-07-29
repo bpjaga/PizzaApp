@@ -29,7 +29,7 @@ object ApiServiceMaker {
             addInterceptor(logger)
         }.build()
 
-        return Retrofit.Builder().client(okHttpClient).baseUrl("127.0.0.1")
+        return Retrofit.Builder().client(okHttpClient).baseUrl("http://127.0.0.1")
             .addConverterFactory(GsonConverterFactory.create()).build()
             .create(ApiService::class.java)
     }

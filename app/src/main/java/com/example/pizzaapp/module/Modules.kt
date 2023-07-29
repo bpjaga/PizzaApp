@@ -4,6 +4,8 @@ import com.example.pizzaapp.api.ApiService
 import com.example.pizzaapp.api.ApiServiceMaker
 import com.example.pizzaapp.repository.AppRepository
 import com.example.pizzaapp.repository.Repository
+import com.example.pizzaapp.ui.activity.MainViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val apiModule = module {
@@ -21,5 +23,7 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-
+    viewModel {
+        MainViewModel(get())
+    }
 }
