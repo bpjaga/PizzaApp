@@ -1,12 +1,18 @@
 package com.example.pizzaapp.ui.activity
 
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.pizzaapp.beans.CrustBean
+import androidx.lifecycle.viewModelScope
+import com.example.pizzaapp.api.Envelope
+import com.example.pizzaapp.api.ErrorModel
 import com.example.pizzaapp.beans.PizzaBean
-import com.example.pizzaapp.beans.SizeBean
 import com.example.pizzaapp.repository.Repository
 import com.example.pizzaapp.ui.models.OrderModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val repo: Repository
@@ -16,56 +22,20 @@ class MainViewModel(
     var pizzaDetails = PizzaBean()
     private val _orders = MutableLiveData<List<OrderModel>>(null)
     val orders get() = _orders
+    val progressBoolean = ObservableBoolean(false)
+    val error = MutableStateFlow<ErrorModel?>(null)
 
     init {
-        //repo.getPizza()
-        pizzaDetails = PizzaBean(
-            "abc",
-            false,
-            "lorem epsum",
-            1,
-            arrayListOf(
-                CrustBean(
-                    1,
-                    "sample1",
-                    2,
-                    arrayListOf(
-                        SizeBean(
-                            1,
-                            "small",
-                            25.12F
-                        ),
-                        SizeBean(
-                            2,
-                            "med",
-                            45.12F
-                        ),
-                        SizeBean(
-                            3,
-                            "large",
-                            135.12F
-                        )
-                    )
-                ),
-                CrustBean(
-                    2,
-                    "sample2",
-                    1,
-                    arrayListOf(
-                        SizeBean(
-                            1,
-                            "med",
-                            65.12F
-                        ),
-                        SizeBean(
-                            2,
-                            "large",
-                            75.12F
-                        )
-                    )
-                )
-            )
-        )
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getData().collectLatest {
+                when (it) {
+                    is Envelope.Loading -> progressBoolean.set(true)
+                    is Envelope.Error -> error.value = it.error
+                    is Envelope.Success -> pizzaDetails = it.data
+                }
+                progressBoolean.set(false)
+            }
+        }
     }
 
     fun addToCart(orderModel: OrderModel) {

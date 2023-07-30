@@ -3,12 +3,16 @@ package com.example.pizzaapp.ui.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.pizzaapp.R
 import com.example.pizzaapp.databinding.ActivityMainBinding
 import com.example.pizzaapp.ui.activity.fragments.CustomizeFragment
 import com.example.pizzaapp.ui.adapters.PizzaOrderAdapter
+import com.example.pizzaapp.ui.dialog.ErrorDialog
 import com.example.pizzaapp.ui.models.OrderListModel
 import com.example.pizzaapp.ui.models.OrderModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -24,7 +28,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        binding.onClick = this
         binding.onClick = this
         adapter = PizzaOrderAdapter(object : PizzaOrderAdapter.ClickInterface {
             override fun onClick(model: OrderListModel) {
@@ -45,6 +48,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         })
         binding.itemsRv.adapter = adapter
+
+        lifecycleScope.launch {
+            viewModel.error.collectLatest {
+                it?.let { ErrorDialog(it).show(supportFragmentManager, "") }
+            }
+        }
 
         viewModel.orders.observe(this) {
             val ordersList = arrayListOf<OrderListModel>()
@@ -76,7 +85,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.addPizza -> CustomizeFragment().show(supportFragmentManager, "")
+            R.id.addPizza -> {
+                if (viewModel.pizzaDetails.crusts.isNotEmpty())
+                    CustomizeFragment().show(supportFragmentManager, "")
+            }
+
             else -> {}
         }
     }

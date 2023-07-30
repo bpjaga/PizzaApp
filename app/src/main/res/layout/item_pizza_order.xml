@@ -16,22 +16,22 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:layout_margin="@dimen/space_small">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/deletePizza"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_gravity="top|end"
+            android:layout_margin="@dimen/space_medium"
             android:onClick="@{onClick}"
-            android:tint="#EE2222"
             android:src="@drawable/ic_delete"
-            android:layout_gravity="top|end"/>
+            android:tint="@color/delete_icon" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp">
+            android:padding="@dimen/space_large">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/pizzaName"
@@ -54,9 +54,9 @@
                 android:id="@+id/pizzaCustomize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/space_medium"
                 android:text='@{model.crustName + ", " + model.sizeName}'
-                android:textColor="#999999"
+                android:textColor="@color/gray"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/pizzaName"
                 app:layout_constraintStart_toEndOf="@id/isVeg" />
@@ -64,10 +64,11 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/pizzaDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{model.pizzaDescription}"
                 android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@id/llQuantity"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/pizzaName" />
 
@@ -75,7 +76,7 @@
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="@dimen/space_small"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@id/llQuantity"
                 app:layout_constraintEnd_toEndOf="parent"

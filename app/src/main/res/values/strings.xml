@@ -8,4 +8,5 @@
     <string name="total_price">Total Price</string>
     <string name="select_pizza_size">Select Pizza Size</string>
     <string name="select_pizza_crust">Select Pizza Crust</string>
+    <string name="ok">OK</string>
 </resources>

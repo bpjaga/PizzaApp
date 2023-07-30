@@ -61,6 +61,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 
     // Room components
     implementation("androidx.room:room-runtime:2.5.2")
