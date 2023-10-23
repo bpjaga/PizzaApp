@@ -29,7 +29,7 @@ class CustomizeFragment : BottomSheetDialogFragment(), View.OnClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_customize, container, false)
         binding.onClick = this
 
-        binding.crus.setOnCheckedChangeListener { _, checkedId ->
+        binding.crust.setOnCheckedChangeListener { _, checkedId ->
             sizes.clear()
             binding.size.removeAllViews()
             binding.size.invalidate()
